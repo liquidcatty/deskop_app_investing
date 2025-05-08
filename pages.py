@@ -64,19 +64,15 @@ class MomentumStrategy(tk.Frame):
         tk.Label(self, text="Go back to main page", font=("Helvetica", 16)).grid(row=0, column=0)
         tk.Button(self, text="Back to Main Page", command=lambda: controller.show_frame(MainPage)).grid(row=1, column=0)
 
-        def show_info(self, start, period, stoqs_codes, money):
+        def show_info(self, start, period, stoqs_codes, money, percentile, deposit):
             try:
                 self.info_frame.destroy()
             except:
                 pass
             
-            self.info_frame = ShowMomentum(self, start, period, stoqs_codes, money)
-            self.info_frame.grid(row=1, column=0)
+            self.info_frame = ShowMomentum(self, start, period, stoqs_codes, money, percentile, deposit)
+            self.info_frame.grid(row=7, column=0)
             print(stoqs_codes)
 
         infoForMomentum = GetInfoForMomentum(self, show_info)
         infoForMomentum.grid(row=2, column=5)
-        
-
-
-

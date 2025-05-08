@@ -5,6 +5,8 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 import time
 
+from simulation_momentum import SimulateMomemntum
+
 class TableToGetStoqInfo(tk.LabelFrame):
     def __init__(self, parent, on_submit_callback):
         super().__init__(parent, text="Tell what stock intrests you!", padx=10, pady=10)
@@ -132,26 +134,43 @@ class GetInfoForMomentum(tk.Frame):
         self.entry_period = tk.Entry(self)
         self.entry_period.grid(row=2, column=1, padx=5, pady=5)
 
-        tk.Label(self, text="How much money do you invest").grid(row=2, column=0, sticky='w')
+        tk.Label(self, text="How much money do you invest").grid(row=3, column=0, sticky='w')
         self.entry_money = tk.Entry(self)
-        self.entry_money.grid(row=2, column=1, padx=5, pady=5)
+        self.entry_money.grid(row=3, column=1, padx=5, pady=5)
 
-        tk.Button(self, text="Submit", command=self.get_info).grid(row=3, column=0, columnspan=2, pady=10)
+        tk.Label(self, text="Percentile of the best performing stocks(a decimal fraction)").grid(row=4, column=0, sticky='w')
+        self.entry_percentile = tk.Entry(self)
+        self.entry_percentile.grid(row=4, column=1, padx=5, pady=5)
+
+        tk.Label(self, text="Deposit for period").grid(row=5, column=0, sticky='w')
+        self.entry_deposit = tk.Entry(self)
+        self.entry_deposit.grid(row=5, column=1, padx=5, pady=5)
+
+        tk.Button(self, text="Submit", command=self.get_info).grid(row=6, column=0, columnspan=2, pady=10)
 
     def get_info(self):
         stoqs_codes = self.entry_stoqs.get().split()
         start = self.entry_start.get()
-        period = self.entry_period.get()
+        period = int(self.entry_period.get())
         money = int(self.entry_money.get())
+        percentile = float(self.entry_percentile.get())
+        deposit = int(self.entry_deposit.get())
         if stoqs_codes:
-            self.on_submit_callback(self, start, period, stoqs_codes, money)
+            self.on_submit_callback(self, start, period, stoqs_codes, money, percentile, deposit)
 
 class ShowMomentum(tk.Frame):
-    def __init__(self, parent, start, period, stoqs, money):
+    def __init__(self, parent, start, period, stoqs, money, percentile, deposit_per_period):
         super().__init__(parent)
-        self.start = start
-        self.period = period
-        self.stoqs = stoqs
-        self.money = money
-        
-        tk.Label(self, text="SIGMA").grid(row=5, column=0)
+        simulation_of_momentum_strategy = SimulateMomemntum(start, period, stoqs, money, percentile, deposit_per_period)
+        df_of_simulation = simulation_of_momentum_strategy.money_df
+        fig, ax = plt.subplots(figsize=(8, 5))
+        ax.plot(df_of_simulation.index, df_of_simulation["Worth"], label="Portfolio history", color="green")
+        ax.set_title("Portfolio Value Over Time")
+        ax.set_xlabel("Date")
+        ax.set_ylabel("Worth")
+        ax.grid(True)
+        ax.legend()
+
+        canvas = FigureCanvasTkAgg(fig, master=self)
+        canvas.draw()
+        canvas.get_tk_widget().pack(fill=tk.BOTH, expand=True)
