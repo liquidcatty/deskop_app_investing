@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import time
 
 from simulation_momentum import SimulateMomemntum
-
+#pobi
 class TableToGetStoqInfo(tk.LabelFrame):
     def __init__(self, parent, on_submit_callback):
         super().__init__(parent, text="Tell what stock intrests you!", padx=10, pady=10)
@@ -115,7 +115,13 @@ class Summary(tk.Frame):
 
 class BasicInfo(tk.Frame):
     def __init__(self, parent):
-        pass
+        super().__init__(parent)
+        #self.stoq_ticker = stoq_ticker
+        #self.info = info
+
+        #tk.Label(self, text="Max 1Y:", font=("Helvetica", 12)).grid(row=10, column=0, sticky='w')
+        #tk.Label(self, text=f"", font=("Helvetica", 12)).grid(row=10, column=1, sticky='w')
+
 
 class GetInfoForMomentum(tk.Frame):
     def __init__(self, parent, on_submit_callback):

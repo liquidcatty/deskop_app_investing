@@ -1,10 +1,8 @@
 import tkinter as tk
-
 from pages import MainPage, InfoStock, MomentumStrategy
-
-
 from tkinter import ttk
-
+print("test czy commity dziualaja")
+#aplikacja
 class App(tk.Tk):
     def __init__(self):
         super().__init__()

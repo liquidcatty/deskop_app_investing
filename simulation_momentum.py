@@ -98,7 +98,3 @@ class SimulateMomemntum:
             chosen_stoqs = df_change_in_prices[df_change_in_prices["Chosen"]]
         self.calculate_the_return_on_stoqs(point, nextpoint, chosen_stoqs.index)
         return df_change_in_prices
-        
-    
-
-SimulateMomemntum("1990-12-13", 7, ["TLT", "AAPL", "AAP"], 1000, 0.6, 2000) 
